@@ -9,33 +9,37 @@ import java.sql.SQLException;
 
 public class DatabaseSetup {
 
-    public boolean validate(User log) throws ClassNotFoundException {
-        boolean status = false;
+    public int registerUser(User user) throws ClassNotFoundException {
+
+        int result = 0;
+
+        String INSERT_USERS_SQL = "INSERT INTO user" +
+                "  (id,username, password) VALUES " +
+                " (?, ?, ?);";
 
         Class.forName("com.mysql.jdbc.Driver");
 
-        try (Connection connection = DriverManager
-                .getConnection("jdbc:mysql://localhost:3306/mysql_database?useSSL=false", "root", "root");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(INSERT_USERS_SQL)) {
 
-             // Step 2:Create a statement using connection object
-             PreparedStatement preparedStatement = connection
-                     .prepareStatement("select * from login where username = ? and password = ? ")) {
-            preparedStatement.setString(1, log.getUsername());
-            preparedStatement.setString(2, log.getPassword());
+            Query.setInt(1, 102);
+            Query.setString(2, user.getUsername());
+            Query.setString(3, user.getPassword());
 
-            System.out.println(preparedStatement);
-            ResultSet rs = preparedStatement.executeQuery();
-            status = rs.next();
+            System.out.println(Query);
+            result = Query.executeUpdate();
 
-        } catch (SQLException e) {
-            // process sql exception
+        }
+
+        catch(SQLException e){
             printSQLException(e);
         }
-        return status;
+
+    return result;
     }
 
     private void printSQLException(SQLException ex) {
-        for (Throwable e : ex) {
+        for (Throwable e: ex) {
             if (e instanceof SQLException) {
                 e.printStackTrace(System.err);
                 System.err.println("SQLState: " + ((SQLException) e).getSQLState());

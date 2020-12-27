@@ -6,7 +6,7 @@
 <body>
 <div align="center">
     <h2>Sign Up</h2>
-    <form action="<%=request.getContextPath()%>/login" method="post">
+    <form action="<%=request.getContextPath()%>/register" method="post">
 
         <table>
             <tr>
@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <td>Confirm Password</td>
-                <td><input type="password" name="password-verify" /></td>
+                <td><input type="password" name="confirm" /></td>
             </tr>
 
         </table><br>
