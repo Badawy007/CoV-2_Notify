@@ -38,6 +38,30 @@ public class DatabaseSetup {
     return result;
     }
 
+
+    public boolean validateUser(User user) throws ClassNotFoundException {
+        boolean status = false;
+
+        Class.forName("com.mysql.jdbc.Driver");
+
+        try (Connection connection = DriverManager
+                .getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+
+             PreparedStatement Query = connection
+                     .prepareStatement("select * from user where username = ? and password = ? ")) {
+            Query.setString(1, user.getUsername());
+            Query.setString(2, user.getPassword());
+
+            System.out.println(Query);
+            ResultSet resultSet = Query.executeQuery();
+            status = resultSet.next();
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return status;
+    }
+
     private void printSQLException(SQLException ex) {
         for (Throwable e: ex) {
             if (e instanceof SQLException) {
