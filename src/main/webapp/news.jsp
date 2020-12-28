@@ -1,16 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: BJR-Desktop
-  Date: 12/27/2020
-  Time: 10:50 PM
+  Date: 12/28/2020
+  Time: 3:47 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Redirect</title>
+    <title>News</title>
 </head>
 <body>
-<h1> Sign up successful </h1>
+
 </body>
 </html>
