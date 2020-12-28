@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
@@ -33,27 +31,36 @@ public class ProfileServlet extends HttpServlet {
         String username = request.getParameter("username");
         String username_delete = request.getParameter("username-delete");
         String result = null;
-        try {
-            result = dbSetup.addUser(username);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (result != "") {
-            out.println(result);
-        }else if (username == null);
-        else {
-            out.println("User not found add");
+
+        if (username != null) {
+            try {
+                result = dbSetup.addUser(username);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (result != "" && !username.equals(session.getAttribute("username"))) {
+                out.println(result);}
+            else {
+                out.println("User not found add");
+            }
         }
 
+        if (username_delete != null){
         try {
             if (dbSetup.deleteUser(username_delete) != 0){
             out.println("User Deleted");
-            } else if (username_delete == null);
+            if(username_delete.equals(session.getAttribute("username"))){
+                response.sendRedirect("index.jsp");
+            }
+
+            }
             else {
                 out.println("User not found delete");
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            }
         }
+
     }
 }
