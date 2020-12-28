@@ -1,10 +1,13 @@
-package com.covid19.login;
+package com.covid19;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DatabaseSetup {
@@ -22,7 +25,7 @@ public class DatabaseSetup {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
              PreparedStatement Query = connection.prepareStatement(INSERT_USERS_SQL)) {
 
-            Query.setInt(1, 102);
+            Query.setInt(1, 101);
             Query.setString(2, user.getUsername());
             Query.setString(3, user.getPassword());
 
@@ -40,7 +43,10 @@ public class DatabaseSetup {
 
 
     public boolean validateUser(User user) throws ClassNotFoundException {
+
         boolean status = false;
+
+        String VALIDATE_USERS_SQL = "select * from user where username = ? and password = ? ";
 
         Class.forName("com.mysql.jdbc.Driver");
 
@@ -48,7 +54,7 @@ public class DatabaseSetup {
                 .getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
 
              PreparedStatement Query = connection
-                     .prepareStatement("select * from user where username = ? and password = ? ")) {
+                     .prepareStatement(VALIDATE_USERS_SQL)) {
             Query.setString(1, user.getUsername());
             Query.setString(2, user.getPassword());
 
@@ -61,6 +67,36 @@ public class DatabaseSetup {
         }
         return status;
     }
+
+    public String addUser(String username) throws ClassNotFoundException {
+        Class.forName("com.mysql.jdbc.Driver");
+        String temp = "";
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+            PreparedStatement Query = connection.prepareStatement("select * from user where username = ?")) {
+            Query.setString(1, username);
+            ResultSet resultSet = Query.executeQuery();
+            while(resultSet.next()){
+                temp = resultSet.getString("username");
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return temp;
+    }
+
+    public int deleteUser(String username) throws ClassNotFoundException {
+        int result = 0;
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement("delete from user where username = ?")) {
+            Query.setString(1, username);
+            result = Query.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return result;
+    }
+
 
     private void printSQLException(SQLException ex) {
         for (Throwable e: ex) {

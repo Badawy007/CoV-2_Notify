@@ -1,4 +1,4 @@
-package com.covid19.login;
+package com.covid19;
 
 import java.io.*;
 import javax.servlet.ServletException;
@@ -6,7 +6,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 @WebServlet("/login")
-public class LoginServlet extends HttpServlet {private static final long serialVersionUID = 1L;
+public class LoginServlet extends HttpServlet {
 
     private DatabaseSetup dbSetup;
     private User user;
@@ -25,12 +25,16 @@ public class LoginServlet extends HttpServlet {private static final long serialV
         user.setUsername(username);
         user.setPassword(password);
 
-            out.println("Username : " + username);
-            out.println("Password : " + password);
-
         try {
             if (dbSetup.validateUser(user)) {
-                out.println("Login Success");
+
+                HttpSession session = request.getSession();
+                session.setAttribute("username",username);
+                session.setAttribute("password",password);
+
+                //session.invalidate();
+
+                response.sendRedirect("profile.jsp");
             } else {
                 out.println("Wrong username/password");
 
@@ -38,9 +42,5 @@ public class LoginServlet extends HttpServlet {private static final long serialV
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
     }
-
 }

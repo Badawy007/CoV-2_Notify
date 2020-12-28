@@ -1,4 +1,4 @@
-package com.covid19.login;
+package com.covid19;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,21 +26,17 @@ public class RegisterServlet extends HttpServlet {
         String pass2 = request.getParameter("confirm");
         if (pass1.equals(pass2)){
             user.setPassword(pass1);
-            out.println(user.getUsername());
-            out.println(user.getPassword());
-        }else{
+            try {
+                dbSetup.registerUser(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            response.sendRedirect("login.jsp");
+
+        } else {
             out.println("Passwords don't match");
+            response.sendRedirect("signup.jsp");
         }
-
-        try {
-            dbSetup.registerUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        response.sendRedirect("signupRedirect.jsp");
-
 
     }
-
-
 }
