@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 public class ProfileServlet extends HttpServlet {
 
     private DatabaseSetup dbSetup;
+    private User user;
 
     public ProfileServlet() {
         dbSetup = new DatabaseSetup();
@@ -42,8 +43,8 @@ public class ProfileServlet extends HttpServlet {
                 out.println(result);}
             else {
                 out.println("User not found add");
-            }
         }
+    }
 
         if (username_delete != null){
         try {
@@ -51,6 +52,7 @@ public class ProfileServlet extends HttpServlet {
             out.println("User Deleted");
             if(username_delete.equals(session.getAttribute("username"))){
                 response.sendRedirect("index.jsp");
+                session.invalidate();
             }
 
             }
@@ -61,6 +63,5 @@ public class ProfileServlet extends HttpServlet {
             e.printStackTrace();
             }
         }
-
     }
 }
