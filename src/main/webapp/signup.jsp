@@ -20,7 +20,11 @@
                         <input type='password' placeholder='Password' name = 'password' class='input-line full-width'></input>
                         <input type='password' placeholder='Confirm Password' name = 'confirm' class='input-line full-width'></input>
                         <div class='spacing'>Already have an account ? <a href = 'login.jsp' class='highlight'>Login !</a></div>
-                        <input class='ghost-round full-width' type="submit" value="Sign Up" />
+                            <% String message  = (String) request.getAttribute("error");
+                                if (message != null) { %>
+                            <h5><%= message %></h5>
+                            <% } %>
+                            <input class='ghost-round full-width' type="submit" value="Sign Up" />
                         </form>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 package com.covid19;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,15 +18,14 @@ public class DatabaseSetup {
         int result = 0;
 
         String INSERT_USERS_SQL = "INSERT INTO user" +
-                "  (id,username, password) VALUES " +
+                "  (name, username, password) VALUES " +
                 " (?, ?, ?);";
 
         Class.forName("com.mysql.jdbc.Driver");
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
-             PreparedStatement Query = connection.prepareStatement(INSERT_USERS_SQL)) {
-
-            Query.setInt(1, 101);
+            PreparedStatement Query = connection.prepareStatement(INSERT_USERS_SQL)) {
+            Query.setString(1, user.getName());
             Query.setString(2, user.getUsername());
             Query.setString(3, user.getPassword());
 
@@ -68,20 +68,39 @@ public class DatabaseSetup {
         return status;
     }
 
-    public String addUser(String username) throws ClassNotFoundException {
+    public void addFriend(String username, String friend) throws ClassNotFoundException {
+
+        String ADD_FRIEND_SQL = "INSERT INTO user_relationship (RelatingUserID,RelatedUserID,Type) " +
+                                "VALUES (?,?,?)";
         Class.forName("com.mysql.jdbc.Driver");
-        String temp = "";
+
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
-            PreparedStatement Query = connection.prepareStatement("select * from user where username = ?")) {
+            PreparedStatement Query = connection.prepareStatement(ADD_FRIEND_SQL)) {
             Query.setString(1, username);
-            ResultSet resultSet = Query.executeQuery();
-            while(resultSet.next()){
-                temp = resultSet.getString("username");
-            }
+            Query.setString(2, friend);
+            Query.setString(3, "friend");
+            Query.executeUpdate();
+
         } catch (SQLException e) {
             printSQLException(e);
         }
-        return temp;
+    }
+
+    public void removeFriend(String username, String friend) throws ClassNotFoundException {
+
+        String ADD_FRIEND_SQL = "DELETE FROM user_relationship " +
+                                "WHERE RelatingUserID = ? AND RelatedUserID = ?";
+        Class.forName("com.mysql.jdbc.Driver");
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(ADD_FRIEND_SQL)) {
+            Query.setString(1, username);
+            Query.setString(2, friend);
+            Query.executeUpdate();
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
     }
 
     public int deleteUser(String username) throws ClassNotFoundException {
@@ -95,6 +114,28 @@ public class DatabaseSetup {
             printSQLException(e);
         }
         return result;
+    }
+
+    public boolean verifyUsername(String username) throws ClassNotFoundException{
+        boolean exist = false;
+        String VERIFY_USERS_SQL =   "SELECT COUNT(*) " +
+                                    "FROM user " +
+                                    "WHERE user.username = ?";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(VERIFY_USERS_SQL)) {
+             Query.setString(1, username);
+             ResultSet resultSet = Query.executeQuery();
+             resultSet.next();
+             int result = resultSet.getInt(1);
+             if (result > 0){
+                 exist = true;
+             }
+             } catch (SQLException e) {
+                printSQLException(e);
+             }
+        return exist;
     }
 
 

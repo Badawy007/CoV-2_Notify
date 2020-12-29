@@ -18,7 +18,11 @@
                         <input type='text' placeholder='Username' name = 'username' class='input-line full-width'></input>
                         <input type='password' placeholder='Password' name = 'password' class='input-line full-width'></input>
                         <input type="checkbox" name = "remember" > Remember me </input>
-                        <div class='spacinglogin'>Don't have an account ? <a href = 'signup.jsp' class='highlight'>Sign up !</a></div>
+                        <div class='spacinglogin'>Don't have an account ? <a href = 'signup.jsp' class='highlight'>Sign up !</a>
+                            <% String message  = (String) request.getAttribute("failmessage");
+                            if (message != null) { %>
+                            <h5><%= message %></h5>
+                            <% } %> </div>
                         <input class='ghost-round full-width' type="submit" value="Login" />
                         </form>
                     </div>

@@ -1,5 +1,6 @@
 package com.covid19;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,24 +15,49 @@ public class ProfileServlet extends HttpServlet {
 
     private DatabaseSetup dbSetup;
     private User user;
+    private String username;
+    private String result;
 
     public ProfileServlet() {
         dbSetup = new DatabaseSetup();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        PrintWriter out = response.getWriter();
-        out.println("Welcome " + session.getAttribute("username") + "!");
-
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        PrintWriter out = response.getWriter();
-        String username = request.getParameter("username");
+        String current = (String) session.getAttribute("username");
+        String friend = request.getParameter("username");
         String username_delete = request.getParameter("username-delete");
-        String result = null;
+        if(friend != "" && username_delete == ""){
+            try {
+                dbSetup.addFriend(current,friend);
+                System.out.println("done add");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (username_delete != "" && friend == ""){
+            try {
+                dbSetup.removeFriend(current,username_delete);
+                System.out.println("done remove");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        RequestDispatcher rd = request.getRequestDispatcher("profile.jsp");
+        rd.forward(request,response);
+
+
+        /*HttpSession session = request.getSession();
+        PrintWriter out = response.getWriter();
+        username = request.getParameter("username");
+        String username_delete = request.getParameter("username-delete");
+        result = null;
 
         if (username != null) {
             try {
@@ -62,6 +88,7 @@ public class ProfileServlet extends HttpServlet {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             }
-        }
+        }*/
     }
+
 }
