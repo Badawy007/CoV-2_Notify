@@ -17,9 +17,9 @@ public class DatabaseSetup {
 
         int result = 0;
 
-        String INSERT_USERS_SQL = "INSERT INTO user" +
-                "  (name, username, password) VALUES " +
-                " (?, ?, ?);";
+        String INSERT_USERS_SQL =   "INSERT INTO user" +
+                                    "(name, username, password) VALUES " +
+                                    " (?, ?, ?);";
 
         Class.forName("com.mysql.jdbc.Driver");
 
@@ -28,8 +28,6 @@ public class DatabaseSetup {
             Query.setString(1, user.getName());
             Query.setString(2, user.getUsername());
             Query.setString(3, user.getPassword());
-
-            System.out.println(Query);
             result = Query.executeUpdate();
 
         }
@@ -58,7 +56,6 @@ public class DatabaseSetup {
             Query.setString(1, user.getUsername());
             Query.setString(2, user.getPassword());
 
-            System.out.println(Query);
             ResultSet resultSet = Query.executeQuery();
             status = resultSet.next();
 
@@ -68,54 +65,86 @@ public class DatabaseSetup {
         return status;
     }
 
-    public void addFriend(String username, String friend) throws ClassNotFoundException {
+    public boolean addFriend(String username, String friend) throws ClassNotFoundException {
 
-        String ADD_FRIEND_SQL = "INSERT INTO user_relationship (RelatingUserID,RelatedUserID,Type) " +
-                                "VALUES (?,?,?)";
+        boolean temp = false;
+
+        if(this.verifyUsername(friend)){
+
+            String ADD_FRIEND_SQL = "INSERT INTO user_relationship (RelatingUserID,RelatedUserID,Type) " +
+                                    "VALUES (?,?,?)";
+
+            Class.forName("com.mysql.jdbc.Driver");
+
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+                 PreparedStatement Query = connection.prepareStatement(ADD_FRIEND_SQL)) {
+                Query.setString(1, username);
+                Query.setString(2, friend);
+                Query.setString(3, "friend");
+                Query.executeUpdate();
+                temp = true;
+
+            } catch (SQLException e) {
+                printSQLException(e);
+            }
+        }
+        return temp;
+    }
+
+
+
+    public boolean removeFriend(String username, String friend) throws ClassNotFoundException {
+
+        boolean temp = false;
+
+        if(this.verifyRelationship(username,friend)) {
+
+            String REMOVE_FRIEND_SQL =  "DELETE FROM user_relationship " +
+                                        "WHERE RelatingUserID = ? AND RelatedUserID = ?";
+
+            Class.forName("com.mysql.jdbc.Driver");
+
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+                 PreparedStatement Query = connection.prepareStatement(REMOVE_FRIEND_SQL)) {
+                Query.setString(1, username);
+                Query.setString(2, friend);
+                Query.executeUpdate();
+                temp = true;
+
+            } catch (SQLException e) {
+                printSQLException(e);
+            }
+        }
+        return temp;
+    }
+
+    //Verify relationship between 2 users, friends or not
+
+    public boolean verifyRelationship(String user1, String user2) throws ClassNotFoundException {
+        boolean temp = false;
+        String VERIFY_RELATIONSHIP_SQL =    "SELECT COUNT(*) " +
+                                            "FROM user_relationship " +
+                                            "WHERE RelatingUserID = ? AND RelatedUserID = ?";
+
         Class.forName("com.mysql.jdbc.Driver");
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
-            PreparedStatement Query = connection.prepareStatement(ADD_FRIEND_SQL)) {
-            Query.setString(1, username);
-            Query.setString(2, friend);
-            Query.setString(3, "friend");
-            Query.executeUpdate();
-
-        } catch (SQLException e) {
+             PreparedStatement Query = connection.prepareStatement(VERIFY_RELATIONSHIP_SQL)) {
+            Query.setString(1, user1);
+            Query.setString(2, user2);ResultSet resultSet = Query.executeQuery();
+            resultSet.next();
+            int result = resultSet.getInt(1);
+            if (result > 0){
+                temp = true;
+            }
+        }catch (SQLException e){
             printSQLException(e);
         }
+        return temp;
     }
 
-    public void removeFriend(String username, String friend) throws ClassNotFoundException {
 
-        String ADD_FRIEND_SQL = "DELETE FROM user_relationship " +
-                                "WHERE RelatingUserID = ? AND RelatedUserID = ?";
-        Class.forName("com.mysql.jdbc.Driver");
-
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
-             PreparedStatement Query = connection.prepareStatement(ADD_FRIEND_SQL)) {
-            Query.setString(1, username);
-            Query.setString(2, friend);
-            Query.executeUpdate();
-
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-    }
-
-    public int deleteUser(String username) throws ClassNotFoundException {
-        int result = 0;
-        Class.forName("com.mysql.jdbc.Driver");
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
-             PreparedStatement Query = connection.prepareStatement("delete from user where username = ?")) {
-            Query.setString(1, username);
-            result = Query.executeUpdate();
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-        return result;
-    }
-
+    //Verify if user exists
     public boolean verifyUsername(String username) throws ClassNotFoundException{
         boolean exist = false;
         String VERIFY_USERS_SQL =   "SELECT COUNT(*) " +
@@ -138,6 +167,114 @@ public class DatabaseSetup {
         return exist;
     }
 
+    public boolean deleteUser(String username) throws ClassNotFoundException {
+        boolean temp = false;
+
+        String DELETE_USER_SQL = "DELETE FROM user " +
+                                 "WHERE username = ?";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        if (verifyUsername(username)) {
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+                 PreparedStatement Query = connection.prepareStatement(DELETE_USER_SQL)) {
+                Query.setString(1, username);
+                Query.executeUpdate();
+                temp = true ;
+            } catch (SQLException e) {
+                printSQLException(e);
+            }
+        }
+        return temp;
+    }
+
+    public String typeUser(String username) throws ClassNotFoundException {
+        String type = "test";
+
+        String TYPE_USER_SQL =  "Select type " +
+                                "FROM user " +
+                                "WHERE username = ?";
+
+        Class.forName("com.mysql.jdbc.Driver");
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+                 PreparedStatement Query = connection.prepareStatement(TYPE_USER_SQL)) {
+                Query.setString(1, username);
+                ResultSet resultSet = Query.executeQuery();
+                while(resultSet.next()){
+                    type = resultSet.getString(1);
+                    return type;
+                }
+            } catch (SQLException e){
+                printSQLException(e);
+            }
+        return type;
+    }
+
+    public int visitLocation(String username, String location) throws ClassNotFoundException {
+        int result = 0;
+
+        String VISIT_LOCATION_SQL = "INSERT INTO visited_location (Visitor_Name,Location_Name) " +
+                                    "VALUES (?,?)";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(VISIT_LOCATION_SQL)) {
+            Query.setString(1, username);
+            Query.setString(2, location);
+            result = Query.executeUpdate();
+
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return result;
+    }
+
+    public int setPositive(String username) throws ClassNotFoundException {
+        int result = 0;
+
+        String SET_POSITIVE_SQL =   "UPDATE user "+
+                                    "SET PCR = ? "+
+                                    "WHERE user.username = ? ";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(SET_POSITIVE_SQL)) {
+            Query.setString(1, "1");
+            Query.setString(2, username);
+            result = Query.executeUpdate();
+
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return result;
+    }
+
+    public int setNegative(String username) throws ClassNotFoundException {
+        int result = 0;
+
+        String SET_NEGATIVE_SQL =   "UPDATE user "+
+                                    "SET PCR = ? "+
+                                    "WHERE user.username = ? ";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(SET_NEGATIVE_SQL)) {
+            Query.setString(1, "0");
+            Query.setString(2, username);
+            result = Query.executeUpdate();
+
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return result;
+    }
+
+
+
+
+
+    /* UPDATE user
+    SET PCR = 'pos'
+    WHERE user.username = 'ab1'; */
 
     private void printSQLException(SQLException ex) {
         for (Throwable e: ex) {

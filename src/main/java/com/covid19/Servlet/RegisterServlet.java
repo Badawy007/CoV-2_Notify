@@ -1,4 +1,7 @@
-package com.covid19;
+package com.covid19.Servlet;
+
+import com.covid19.DatabaseSetup;
+import com.covid19.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

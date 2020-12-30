@@ -217,7 +217,7 @@ button:focus {
 
 nav{
   background-color: rgba(185, 147, 214);  
-	 position: fixed;
+   position: fixed;
    z-index:999;
    font-family: roboto;
    position: relative;
