@@ -39,15 +39,8 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("username",username);
                 session.setAttribute("password",password);
-                switch (type){
-                    case "admin":
-                    response.sendRedirect("adminPanel.jsp");
-                    System.out.println(type);
-                    break;
-                    case "user":
-                    response.sendRedirect("profile.jsp");
-                    break;
-                }
+                session.setAttribute("type",dbSetup.typeUser(username));
+                response.sendRedirect("index.jsp");
             } else {
                 request.setAttribute("failmessage","*Wrong username/password");
                 RequestDispatcher rd = request.getRequestDispatcher("login.jsp");

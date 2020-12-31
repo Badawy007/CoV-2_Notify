@@ -8,7 +8,7 @@
 <head>
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="styleindex.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script>src="https://code.jquery.com/jquery-3.2.1.slim.min.js"</script>
@@ -28,6 +28,12 @@
           <li class="nav-item">
             <a class="nav-link" href="index.jsp">Home</a>
           </li>
+            <li class="nav-item">
+                <a class="nav-link" href="notifications.jsp">Notification</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="requests.jsp">Requests</a>
+            </li>
           <li class="nav-item">
             <a class="nav-link" href="<%=request.getContextPath()%>/logout">Logout</a>
           </li>
@@ -35,7 +41,6 @@
       </div>
     </nav>
   </div>
-
 </div>
 
 <h3> Add Friend </h3>
