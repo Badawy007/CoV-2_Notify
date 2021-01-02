@@ -41,5 +41,17 @@
       </ul>
     </div>
   </nav>
+<div id="conteneur">
+    <h1> <font color="black" face="Arial" size="30px"> Bienvenu </font></h1>
+    <h2 > <font color="black" face="Arial" size="10px"> COV_Notify est la pour vous aider</font></h2>
+    <p align="center"> <font size="5px" color=black > Voila maintenant plus d'un an qu'une pandémie mondiale a bouleversé notre vie.
+        Le virus circule toujours, et afin de vous proteger, vous et vos proches, nous avons mis en place cette application.
+        Vous pourrez indiquer ou vous êtes parti et avec quelle personne. Comme ca on sera en mesure de vous informer si
+        vous êtes susceptible de contracter le virus. Et si vous êtes positif merci de bien vouloir le notifier afin que
+        nous puissions contacter les gens qui étaient présents dans le même endroit que vous. Nous comptons sur votre colaboration.
+        L'union fait la force.
+    </font> </p>
+
+</div>
 </body>
 </html>
