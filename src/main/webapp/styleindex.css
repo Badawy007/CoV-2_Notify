@@ -46,8 +46,14 @@
     margin-left: 20px;
 }
 
-input{
-    display: inline;
+.accept {
+    display: flex;
+    padding: 10px;
+    font-size: 20px;
+
 }
 
+.accept input{
+    margin: 5px;
+}
 
