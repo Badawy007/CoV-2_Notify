@@ -272,3 +272,9 @@ nav .navbar-toggler{
     height: 100%;
   }
 }
+
+
+.containerProfile{
+  margin-left: 100px;
+  color:red;
+}

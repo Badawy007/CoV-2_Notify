@@ -1,10 +1,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.covid19.DatabaseSetup" %>
 <%
     String messageadd = (String) request.getAttribute("messageadd");
     String messageremove = (String) request.getAttribute("messageremove");
     String messagelocation = (String) request.getAttribute("messagelocation");
     String username = (String) session.getAttribute("username");
+
     %>
 <html>
 <head>
@@ -45,12 +47,17 @@
   </div>
 </div>
 
+
+<div class="container">
+
 <h5>Username : <%= username  %></h5>
 
-<h3> Add Friend </h3>
+
+<p> Add Friend </p>
 <form action="<%=request.getContextPath()%>/profile" method="post">
-    <input type='text' placeholder='Username' name = 'username' class='input-line full-width'>
-    <input type="submit" value="Add" />
+  <div class="form-group">
+    <input type='text' placeholder='Username' name = 'username' class="form-control" class='input-line full-width'>
+    <input type="submit" class="btn btn-primary" value="Add" />
     <% if (messageadd != null){ %>
         <h5><%= messageadd %> </h5>
     <% } %>
@@ -58,8 +65,8 @@
    <%-- Remove Friend --%>
 
     <h3> Remove Friend </h3>
-    <input type='text' placeholder='Username' name = 'removefriend' class='input-line full-width'>
-    <input type="submit" value="Remove"/>
+    <input type='text' placeholder='Username' name = 'removefriend' class="form-control" class='input-line full-width'>
+    <input type="submit" class="btn btn-primary" value="Remove"/>
 
     <% if (messageremove != null){ %>
     <h5><%= messageremove %> </h5>
@@ -75,18 +82,32 @@
         <option value="location4">location4</option>
         <option value="location4">Other</option>
     </select>
-    <input type="submit" value = "Add location">
+    <input type="datetime-local" name = "date">
+    <input type="submit" class="btn btn-primary" value = "Add location">
 
     <% if (messagelocation != null){ %>
     <h5><%= messagelocation %> </h5>
     <% } %>
-
+    </div>
 </form>
 
 <a href="friendList.jsp"/>Display Friendlist</a>
 
 <br> <br>
-<a href="pcrPos.jsp"/>I am positive</a>
+
+    <%
+        DatabaseSetup  dbSetup = new DatabaseSetup();
+        if (dbSetup.getState(username) == 0){%>
+
+            <a class="btn btn-danger" href="pcrPos.jsp"/>I am positive</a>
+
+    <% } else {%>
+
+            <a class="btn btn-success" href="pcrNeg.jsp"/>I am negative</a>
+
+<% } %>
+
+</div>
 
 </body>
 </html>

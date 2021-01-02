@@ -51,10 +51,18 @@
         List<String> friendList = new ArrayList<>(dbSetup.getFriendRequests(current));
         if(!friendList.isEmpty()){
             for (String friendrequest : friendList){ %>
-<form action="<%=request.getContextPath()%>/accept" method="get">
-    <input type="radio" value="<%=friendrequest%>" name="friendreq"> <%=friendrequest%> wants to be your friend
-    <input type="submit" value="Accept">
+
+<div class = "accept">
+<form action="<%=request.getContextPath()%>/accept" >
+    <input type="hidden" name ="friendreq" value =<%=friendrequest%>> <%=friendrequest%> wants to be your friend
+    <input type="submit" class="btn btn-success" value="Accept">
 </form>
+
+<form action = "<%=request.getContextPath()%>/refuse" method="get">
+    <input type="hidden" name ="friendref" value =<%=friendrequest%>>
+    <input type="submit" class="btn btn-danger" value="Refuse">
+</form>
+</div>
 <%      }
     } else { %>
 <h3> You have no friend request </h3>
