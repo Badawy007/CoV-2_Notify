@@ -1,56 +1,107 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <meta charset = "UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cov-2_Notify Homepage</title>
+    <link rel="stylesheet" href="styleindex.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script>src="https://code.jquery.com/jquery-3.2.1.slim.min.js"</script>
+    <script>src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"</script>
 
-<!DOCTYPE html>
-<html lang="en">
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>CoV-2 Notify</title>
-      <link rel="stylesheet" href="style.css">
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
+</head>
 <body>
+<div class="header">
+  <div class="menu-bar">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="index.jsp"><img src="resources/logo.png" alt=""></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa fa-bars"></i>
+      </button>
+        <% if (session == null || session.getAttribute("username") == null) { %>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+          </li>
+            <li class="nav-item">
+                <a class="nav-link" href="login.jsp">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="signup.jsp">Sign up</a>
+            </li>
+            <% }  else if(session.getAttribute("type").equals("user")) { %>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.jsp">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.jsp">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="notifications.jsp">Notifications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="requests.jsp">Requests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/logout">Logout</a>
+                    </li>
+            <% } else {%>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.jsp">Home</a>
+                            </li>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="notifications.jsp">Notifications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="requests.jsp">Requests</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="adminPanel.jsp">Panel</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<%=request.getContextPath()%>/logout">Logout</a>
+                            </li>
+                    <%}%>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
 
-<nav class="navbar fixed-top navbar-expand-md">
-    <a class="navbar-brand ml-5" href="index.jsp"><span id="blue">CoV-2</span> NOTIFY</a>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <div id="wrapper">
-            <div class="icon">
-                <span class="line top"></span>
-                <span class="line middle"></span>
-                <span class="line bottom"></span>
-            </div>
-          </div>
-    </button>
+<div class="container">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-5 w-100 justify-content-end">
-        <li class="nav-item">
-          <a class="nav-link" href="news.jsp">NEWS</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="login.jsp">LOGIN</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="signup.jsp">SIGN UP</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="profile.jsp">PROFILE</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-<div id="conteneur">
-    <h1> <font color="black" face="Arial" size="30px"> Bienvenu </font></h1>
-    <h2 > <font color="black" face="Arial" size="10px"> COV_Notify est la pour vous aider</font></h2>
-    <p align="center"> <font size="5px" color=black > Voila maintenant plus d'un an qu'une pandémie mondiale a bouleversé notre vie.
-        Le virus circule toujours, et afin de vous proteger, vous et vos proches, nous avons mis en place cette application.
-        Vous pourrez indiquer ou vous êtes parti et avec quelle personne. Comme ca on sera en mesure de vous informer si
-        vous êtes susceptible de contracter le virus. Et si vous êtes positif merci de bien vouloir le notifier afin que
-        nous puissions contacter les gens qui étaient présents dans le même endroit que vous. Nous comptons sur votre colaboration.
-        L'union fait la force.
-    </font> </p>
+<h4>Symptoms</h4>
+<p>
+    <b> Most common symptoms:</b> <br>
+     - fever <br>
+     - dry cough <br>
+     - tiredness <br>
+     - Less common symptoms: <br>
+     - aches and pains <br>
+     - sore throat <br>
+     - diarrhoea <br>
+     - conjunctivitis <br>
+     - headache <br>
+     - loss of taste or smell <br>
+     - a rash on skin, or discolouration of fingers or toes <br> <br>
+
+    <b> Serious symptoms:</b> <br>
+     - difficulty breathing or shortness of breath <br>
+     - chest pain or pressure <br>
+     - loss of speech or movement <br> <br>
+
+    <b> **Seek immediate medical attention if you have serious symptoms. Always call before visiting your doctor or health facility.
+       People with mild symptoms who are otherwise healthy should manage their symptoms at home.
+       On average it takes 5–6 days from when someone is infected with the virus for symptoms to show, however it can take up to 14 days.</b>
+</p>
+
+
 
 </div>
 </body>
