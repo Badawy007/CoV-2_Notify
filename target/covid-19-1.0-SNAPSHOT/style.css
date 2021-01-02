@@ -184,7 +184,7 @@ button:focus {
   flex-flow: column;
   box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
-  height: 560px;
+  height: 580px;
   width: 360px;
   background: #fff;
 }
@@ -194,7 +194,7 @@ button:focus {
   background: linear-gradient(#8CA6DB, #B993D6);
   opacity: 0.85;
   filter: alpha(opacity=85);
-  height: 560px;
+  height: 580px;
   position: absolute;
   width: 360px;
   z-index: 1;

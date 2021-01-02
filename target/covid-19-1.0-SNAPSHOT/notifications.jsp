@@ -1,3 +1,6 @@
+<%@ page import="com.covid19.DatabaseSetup" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -37,5 +40,27 @@
         </nav>
     </div>
 </div>
+
+<%
+    String current  = (String) session.getAttribute("username");
+    DatabaseSetup dbSetup = new DatabaseSetup();
+    try {
+        List<String> infected = new ArrayList<>(dbSetup.notifyUser(current));
+        if(!infected.isEmpty()){
+            for (String friend : infected){ %>
+
+ <h5>Your friend <%=friend%> has declared himself infected </h5>
+
+<%      }
+} else { %>
+<h3> You don't have any Notification </h3>
+<%}
+}
+catch (ClassNotFoundException e) {
+    e.printStackTrace();
+} %>
+
+
+
 </body>
 </html>
