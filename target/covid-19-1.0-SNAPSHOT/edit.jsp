@@ -1,4 +1,8 @@
+<%@ page import="com.covid19.DatabaseSetup" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% DatabaseSetup dbSetup = new DatabaseSetup();
+    String username = (String) session.getAttribute("username");
+%>
 <html>
 <head>
     <meta charset = "UTF-8">
@@ -37,5 +41,28 @@
         </nav>
     </div>
 </div>
+
+<form action="<%=request.getContextPath()%>/editName" method="post" >
+    <input type="text" placeholder="Enter new Name" name="newname">
+    <input type="text" placeholder="Confirm new Name" name="cnewname" >
+    <input type="submit" class="btn btn-primary" value="Change Name"/>
+</form>
+
+<form action="<%=request.getContextPath()%>editUsername" method="post" >
+    <input type="text" name="newuser">
+    <input type="submit" class="btn btn-primary" value="Change Username"/>
+</form>
+
+<form action="<%=request.getContextPath()%>/Edit/editPassword" method="post" >
+    <input type="password" placeholder="Enter new Password" name="newpass">
+    <input type="password" placeholder="Confirm new Password" name="cnewpass" >
+    <input type="submit" class="btn btn-primary" value="Change Password"/>
+</form>
+
+<form action="<%=request.getContextPath()%>/Edit/editBirthday" method="post" >
+    <input type="date" name="newdate">
+    <input type="submit" class="btn btn-primary" value="Change Birthdate"/>
+</form>
+
 </body>
 </html>

@@ -1,5 +1,10 @@
+<%@ page import="com.covid19.DatabaseSetup" %>
 <%  String messagedelete = (String) request.getAttribute("messagedelete");
-    String messagenegative = (String) request.getAttribute("messagenegative");  %>
+    String messagenegative = (String) request.getAttribute("messagenegative");
+    String messageadd = (String) request.getAttribute("messageadd");
+    String messageremove = (String) request.getAttribute("messageremove");
+    String username = (String) session.getAttribute("username");
+%>
 
 <html>
 <head>
@@ -25,6 +30,12 @@
           <li class="nav-item">
             <a class="nav-link" href="index.jsp">Home</a>
           </li>
+            <li class="nav-item">
+                <a class="nav-link" href="notifications.jsp">Notifications</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="requests.jsp">Requests</a>
+            </li>
           <li class="nav-item">
             <a class="nav-link" href="<%=request.getContextPath()%>/logout">Logout</a>
           </li>
@@ -34,20 +45,73 @@
   </div>
 </div>
 
-    <h3> Delete User </h3>
-    <form action="<%=request.getContextPath()%>/adminPanel" method="post">
-    <input type='text' placeholder='Username' name = 'deleteuser' class='input-line full-width'>
-    <input type="submit" value="Delete"/>
-    <% if (messagedelete != null){ %>
-    <h5><%= messagedelete %> </h5>
+<div class="container">
+
+    <% if (username != null) {%>
+
+    <h5>Username : <%= username  %></h5>
+
+
+    <p> Add Friend </p>
+    <form action="<%=request.getContextPath()%>/profile" method="post">
+        <div class="form-group">
+            <input type='text' placeholder='Username' name = 'username' class="form-control" class='input-line full-width'>
+            <input type="submit" class="btn btn-primary" value="Add" />
+            <% if (messageadd != null){ %>
+            <h5><%= messageadd %> </h5>
+            <% } %>
+
+            <%-- Remove Friend --%>
+
+            <h3> Remove Friend </h3>
+            <input type='text' placeholder='Username' name = 'removefriend' class="form-control" class='input-line full-width'>
+            <input type="submit" class="btn btn-primary" value="Remove"/>
+
+            <% if (messageremove != null){ %>
+            <h5><%= messageremove %> </h5>
+            <% } %>
+
+            <h3> Delete User </h3>
+            <form action="<%=request.getContextPath()%>/adminPanel" method="post">
+                <input type='text' placeholder='Username' name = 'deleteuser' class='input-line full-width'>
+                <input type="submit" value="Delete" class="btn btn-warning" />
+                    <% if (messagedelete != null){ %>
+                <h5><%= messagedelete %> </h5>
+                    <% } %>
+                <br>
+                <h3> Declare User as Negative </h3>
+                <input type='text' placeholder='Username' name = 'neguser' class='input-line full-width'>
+                <input type="submit" value="Declare Negative" class="btn btn-warning"/>
+                    <% if (messagenegative != null){ %>
+                <h5><%= messagenegative %> </h5>
+                    <% } %>
+
+
+        </div>
+    </form>
+
+    <a class="btn btn-warning" href="activity.jsp"/>Declare Activity</a>
+
+    <a class="btn btn-warning" href="friendList.jsp"/>Display Friendlist</a>
+
+    <a class="btn btn-warning" href="edit.jsp"/>Edit Profile</a>
+
+    <br> <br>
+
+    <%
+        DatabaseSetup dbSetup = new DatabaseSetup();
+        if (dbSetup.getState(username) == 0){%>
+
+    <a class="btn btn-danger" href="pcrPos.jsp"/>I am positive</a>
+
+    <% } else {%>
+
+    <a class="btn btn-success" href="pcrNeg.jsp"/>I am negative</a>
+
     <% } %>
-<br>
-    <h3> Declare User as Negative </h3>
-    <input type='text' placeholder='Username' name = 'neguser' class='input-line full-width'>
-    <input type="submit" value="Declare Negative"/>
-    <% if (messagenegative != null){ %>
-    <h5><%= messagenegative %> </h5>
-    <% } %>
+    <%} else { response.sendRedirect("login.jsp");}%>
+</div>
+
 </form>
 </body>
 </html>

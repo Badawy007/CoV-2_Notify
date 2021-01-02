@@ -53,6 +53,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="index.jsp">Home</a>
                             </li>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="notifications.jsp">Notifications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="requests.jsp">Requests</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="adminPanel.jsp">Panel</a>
                             </li>

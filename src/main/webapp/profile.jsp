@@ -1,10 +1,7 @@
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.covid19.DatabaseSetup" %>
 <%
     String messageadd = (String) request.getAttribute("messageadd");
     String messageremove = (String) request.getAttribute("messageremove");
-    String messagelocation = (String) request.getAttribute("messagelocation");
     String username = (String) session.getAttribute("username");
 
     %>
@@ -50,7 +47,7 @@
 
 <div class="container">
 
-<% if (username != null) {%>
+<% if (username != null && !username.equals("admin") ) {%>
 
 <h5>Username : <%= username  %></h5>
 
@@ -96,8 +93,9 @@
 
             <a class="btn btn-success" href="pcrNeg.jsp"/>I am negative</a>
 
-<% } %>
-    <%} else { response.sendRedirect("login.jsp");}%>
+<% }
+    } else{response.sendRedirect("login.jsp");}
+    %>
 </div>
 
 </body>

@@ -41,9 +41,9 @@ public class ProfileServlet extends HttpServlet {
         if(friend != "" && removeFriend == ""){
             if (current.equals(friend)){
                 request.setAttribute("messageadd","*You can't add yourself");
-            } else if (friend.equals("admin")){
+            } /*else if (friend.equals("admin")){
                 request.setAttribute("messageadd","*This user can't be added");
-            } else {
+            }*/ else {
                 try {
                     if (dbSetup.addFriend(current, friend)) {
                         dbSetup.addFriend(friend, current);

@@ -289,6 +289,71 @@ public class DatabaseSetup {
         return result;
     }
 
+    public String getName(String username) throws ClassNotFoundException {
+        String Name = "";
+
+        String GET_NAME_SQL =   "SELECT Name "+
+                                "FROM user "+
+                                "WHERE username = ? ";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(GET_NAME_SQL)) {
+            Query.setString(1, username);
+            ResultSet resultSet = Query.executeQuery();
+            resultSet.next();
+            Name = resultSet.getString("name");
+
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return Name;
+    }
+
+    public String getBirthdate(String username) throws ClassNotFoundException {
+        String Name = "";
+
+        String GET_BIRTHDATE_SQL =  "SELECT birthdate "+
+                                    "FROM user "+
+                                    "WHERE username = ? ";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(GET_BIRTHDATE_SQL)) {
+            Query.setString(1, username);
+            ResultSet resultSet = Query.executeQuery();
+            resultSet.next();
+            Name = resultSet.getString("birthdate");
+
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return Name;
+    }
+
+    public int changeName(String username, String name) throws ClassNotFoundException {
+        int result = 0;
+
+        String CHANGE_NAME_SQL =   "UPDATE user "+
+                "SET name = ? "+
+                "WHERE  username = ? ";
+
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(CHANGE_NAME_SQL)) {
+            Query.setString(1, name);
+            Query.setString(2, username);
+            result = Query.executeUpdate();
+
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return result;
+
+    }
+
+
     public int setNegative(String username) throws ClassNotFoundException {
         int result = 0;
 
