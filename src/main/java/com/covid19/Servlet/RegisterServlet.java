@@ -1,4 +1,7 @@
-package com.covid19;
+package com.covid19.Servlet;
+
+import com.covid19.DatabaseSetup;
+import com.covid19.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,6 +27,7 @@ public class RegisterServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         user.setName(request.getParameter("name"));
         user.setUsername(request.getParameter("username"));
+        user.setBirthdate(request.getParameter("date"));
         String pass1 = request.getParameter("password");
         String pass2 = request.getParameter("confirm");
         if (pass1.equals(pass2)){

@@ -1,53 +1,92 @@
-<html lang="en">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>CoV-2 Notify</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%
+    String messageadd = (String) request.getAttribute("messageadd");
+    String messageremove = (String) request.getAttribute("messageremove");
+    String messagelocation = (String) request.getAttribute("messagelocation");
+    String username = (String) session.getAttribute("username");
+    %>
+<html>
+<head>
+    <meta charset = "UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="styleindex.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script>src="https://code.jquery.com/jquery-3.2.1.slim.min.js"</script>
+    <script>src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"</script>
+
+</head>
 <body>
-<nav class="navbar fixed-top navbar-expand-md">
-    <a class="navbar-brand ml-5" href="index.jsp"><span id="blue">CoV-2</span> NOTIFY</a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <div id="wrapper">
-            <div class="icon">
-                <span class="line top"></span>
-                <span class="line middle"></span>
-                <span class="line bottom"></span>
-            </div>
-        </div>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-5 w-100 justify-content-end">
+<div class="header">
+  <div class="menu-bar">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="index.jsp"><img src="resources/logo.png" alt="Home"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.jsp">Home</a>
+          </li>
             <li class="nav-item">
-                <a class="nav-link" href="news.jsp">NEWS</a>
+                <a class="nav-link" href="notifications.jsp">Notification</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="login.jsp">LOGIN</a>
+                <a class="nav-link" href="requests.jsp">Requests</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="signup.jsp">SIGN UP</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="profile.jsp">PROFILE</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<%=request.getContextPath()%>/logout">Logout</a>
+          </li>
         </ul>
-    </div>
-</nav>
-</body>
-<div id="conteneur">
-<% String name = (String) session.getAttribute("username");%>
-    <h1> <font color="black" size="30">Welcome <%= name %> </font></h1>
-<form action="<%=request.getContextPath()%>/profile" method="post">
-    <p> <font color="black" size="5px"> Add user</font> </p>
-    <input class="w3-input w3-animate-input" type='text' style="width: 30%" placeholder='Username' name = 'username' class='input-line full-width'>
-    <input type="submit" value="Add" />
-    <p> <font color="black" size="5px"> Delete user</font> </p>
-    <input class="w3-input w3-animate-input" style="width: 30%" type='text' placeholder='Username' name = 'username-delete' class='input-line full-width'>
-    <input type="submit" value="Delete"/> <br><br>
-    <a href="login.jsp"/>Logout</a>
-</form>
+      </div>
+    </nav>
+  </div>
 </div>
 
+<h5>Username : <%= username  %></h5>
+
+<h3> Add Friend </h3>
+<form action="<%=request.getContextPath()%>/profile" method="post">
+    <input type='text' placeholder='Username' name = 'username' class='input-line full-width'>
+    <input type="submit" value="Add" />
+    <% if (messageadd != null){ %>
+        <h5><%= messageadd %> </h5>
+    <% } %>
+
+   <%-- Remove Friend --%>
+
+    <h3> Remove Friend </h3>
+    <input type='text' placeholder='Username' name = 'removefriend' class='input-line full-width'>
+    <input type="submit" value="Remove"/>
+
+    <% if (messageremove != null){ %>
+    <h5><%= messageremove %> </h5>
+    <% } %>
+
+    <%-- Declare location --%>
+
+    <h3> Declare location </h3>
+    <select id="loc" name="location">
+        <option value="location1">location1</option>
+        <option value="location2">location2</option>
+        <option value="location3">location3</option>
+        <option value="location4">location4</option>
+        <option value="location4">Other</option>
+    </select>
+    <input type="submit" value = "Add location">
+
+    <% if (messagelocation != null){ %>
+    <h5><%= messagelocation %> </h5>
+    <% } %>
+
+</form>
+
+<a href="friendList.jsp"/>Display Friendlist</a>
+
+<br> <br>
+<a href="pcrPos.jsp"/>I am positive</a>
+
+</body>
+</html>

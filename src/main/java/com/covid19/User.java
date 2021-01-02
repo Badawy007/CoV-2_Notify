@@ -3,6 +3,7 @@ package com.covid19;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 public class User implements Serializable {
 
@@ -11,6 +12,7 @@ public class User implements Serializable {
     private String name;
     private String address;
     private String contact;
+    private String birthdate;
     private List<User> friends;
     private boolean infected;
 
@@ -18,6 +20,8 @@ public class User implements Serializable {
         this.friends = new ArrayList<>();
         this.infected = false;
     }
+
+
 
     public void addFriend(User user){
         friends.add(user);
@@ -70,5 +74,13 @@ public class User implements Serializable {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
     }
 }

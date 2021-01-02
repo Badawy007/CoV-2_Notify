@@ -1,4 +1,7 @@
-package com.covid19;
+package com.covid19.Servlet;
+
+import com.covid19.DatabaseSetup;
+import com.covid19.User;
 
 import java.io.*;
 import javax.servlet.RequestDispatcher;
@@ -24,26 +27,27 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+
         user.setUsername(username);
         user.setPassword(password);
         result = true;
         try {
           result = dbSetup.validateUser(user);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-            if (result) {
+          String type =   dbSetup.typeUser(username);
 
+            if (result) {
                 HttpSession session = request.getSession();
                 session.setAttribute("username",username);
                 session.setAttribute("password",password);
-                //session.invalidate();
-                response.sendRedirect("profile.jsp");
+                session.setAttribute("type",dbSetup.typeUser(username));
+                response.sendRedirect("index.jsp");
             } else {
                 request.setAttribute("failmessage","*Wrong username/password");
                 RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
                 rd.forward(request,response);
             }
-
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
