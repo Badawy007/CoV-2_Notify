@@ -24,7 +24,5 @@
     catch (ClassNotFoundException e) {
         e.printStackTrace();
     } %>
-
-
 </body>
 </html>

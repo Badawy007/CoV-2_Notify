@@ -16,8 +16,8 @@ public class DatabaseSetup {
         int result = 0;
 
         String INSERT_USERS_SQL =   "INSERT INTO user" +
-                                    "(name, username, password) VALUES " +
-                                    " (?, ?, ?);";
+                                    "(name, username, password, birthdate) VALUES " +
+                                    " (?, ?, ?, ?);";
 
         Class.forName("com.mysql.jdbc.Driver");
 
@@ -26,6 +26,7 @@ public class DatabaseSetup {
             Query.setString(1, user.getName());
             Query.setString(2, user.getUsername());
             Query.setString(3, user.getPassword());
+            Query.setString(4, user.getBirthdate());
             result = Query.executeUpdate();
 
         }
@@ -342,6 +343,30 @@ public class DatabaseSetup {
             Query.executeUpdate();
         } catch (SQLException e){
             printSQLException(e); }
+    }
+
+    public List<String> notifyUser(String current) throws ClassNotFoundException {
+        List<String> infected = new ArrayList<>();
+
+        String NOTIFY_USER_SQL = "SELECT RelatedUserID " +
+                                 "FROM user_relationship " +
+                                 "FULL JOIN user " +
+                                 "ON RelatingUserID = ? AND RelatedUserID = user.username AND user.PCR = ?";
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(NOTIFY_USER_SQL)) {
+            Query.setString(1,current);
+            Query.setString(2,"1");
+            ResultSet resultSet = Query.executeQuery();
+            while(resultSet.next()){
+                System.out.println(resultSet.getString(1));
+                infected.add(resultSet.getString(1));
+            }
+
+        } catch (SQLException e){
+            printSQLException(e); }
+
+
+        return infected;
     }
 
     private void printSQLException(SQLException ex) {
