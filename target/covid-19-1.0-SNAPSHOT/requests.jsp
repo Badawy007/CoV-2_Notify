@@ -1,5 +1,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.covid19.DatabaseSetup" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+
 <html>
 <head>
     <meta charset = "UTF-8">
@@ -38,5 +42,26 @@
         </nav>
     </div>
 </div>
+
+<%
+    String current  = (String) session.getAttribute("username");
+    DatabaseSetup dbSetup = new DatabaseSetup();
+
+    try {
+        List<String> friendList = new ArrayList<>(dbSetup.getFriendRequests(current));
+        if(!friendList.isEmpty()){
+            for (String friendrequest : friendList){ %>
+<form action="<%=request.getContextPath()%>/accept" method="get">
+    <input type="radio" value="<%=friendrequest%>" name="friendreq"> <%=friendrequest%> wants to be your friend
+    <input type="submit" value="Accept">
+</form>
+<%      }
+    } else { %>
+<h3> You have no friend request </h3>
+<%}
+}
+catch (ClassNotFoundException e) {
+    e.printStackTrace();
+} %>
 </body>
 </html>

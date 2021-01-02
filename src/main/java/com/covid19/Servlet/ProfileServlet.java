@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
@@ -36,11 +38,7 @@ public class ProfileServlet extends HttpServlet {
         String removeFriend = request.getParameter("removefriend");
         String location = request.getParameter("location");
 
-
         if(friend != "" && removeFriend == ""){
-
-
-
             if (current.equals(friend)){
                 request.setAttribute("messageadd","*You can't add yourself");
             } else if (friend.equals("admin")){
@@ -48,7 +46,8 @@ public class ProfileServlet extends HttpServlet {
             } else {
                 try {
                     if (dbSetup.addFriend(current, friend)) {
-                        request.setAttribute("messageadd", "*User added as friend");
+                        dbSetup.addFriend(friend, current);
+                        request.setAttribute("messageadd", "*Friend Request Sent");
                     } else {
                         request.setAttribute("messageadd", "*User not found");
                     }

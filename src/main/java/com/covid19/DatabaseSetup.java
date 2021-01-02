@@ -1,7 +1,5 @@
 package com.covid19;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -268,13 +266,83 @@ public class DatabaseSetup {
         return result;
     }
 
+    public List<String> getFriends(String current) throws ClassNotFoundException{
+        List<String> friends = new ArrayList<>();
 
+        String GET_FRIENDS_SQL = "SELECT RelatedUserID " +
+                                 "FROM user_relationship " +
+                                 "WHERE RelatingUserID = ? AND State = ? ";
 
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(GET_FRIENDS_SQL)) {
+            Query.setString(1, current);
+            Query.setString(2,"1");
+            ResultSet resultSet = Query.executeQuery();
+            while(resultSet.next()){
+                if (!resultSet.getString("RelatedUserID").equals(current)){
+                friends.add(resultSet.getString("RelatedUserID"));
+                }
+            }
+        } catch (SQLException e){
+            printSQLException(e); }
+        return friends;
+    }
 
+    public List<String> getFriendRequests(String current) throws ClassNotFoundException{
+        List<String> friendRequests = new ArrayList<>();
 
-    /* UPDATE user
-    SET PCR = 'pos'
-    WHERE user.username = 'ab1'; */
+        String GET_FRIENDS_SQL = "SELECT RelatingUserID " +
+                                 "FROM user_relationship " +
+                                 "WHERE RelatedUserID = ? AND State = ? ";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(GET_FRIENDS_SQL)) {
+            Query.setString(1, current);
+            Query.setString(2,"0");
+            ResultSet resultSet = Query.executeQuery();
+            while(resultSet.next()){
+                friendRequests.add(resultSet.getString("RelatingUserID"));
+            }
+        } catch (SQLException e){
+            printSQLException(e); }
+        return friendRequests;
+    }
+
+    public void acceptFriend(String current, String friend) throws ClassNotFoundException {
+
+        String ACCEPT_FRIEND_SQL =  "UPDATE user_relationship " +
+                                    "SET State = ? " +
+                                    "WHERE (RelatingUserID = ? AND RelatedUserID = ?)";
+
+        Class.forName("com.mysql.jdbc.Driver");
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(ACCEPT_FRIEND_SQL)) {
+            Query.setString(1,"1");
+            Query.setString(2,friend);
+            Query.setString(3,current);
+            Query.executeUpdate();
+        } catch (SQLException e){
+            printSQLException(e); }
+    }
+
+    public void refuseFriend(String current, String friend) throws ClassNotFoundException {
+
+        String REFUSE_FRIEND_SQL =  "DELETE FROM user_relationship " +
+                                    "WHERE (RelatingUserID = ? AND RelatedUserID = ?)";
+
+        Class.forName("com.mysql.jdbc.Driver");
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(REFUSE_FRIEND_SQL)) {
+            Query.setString(1,friend);
+            Query.setString(2,current);
+            Query.executeUpdate();
+        } catch (SQLException e){
+            printSQLException(e); }
+    }
 
     private void printSQLException(SQLException ex) {
         for (Throwable e: ex) {

@@ -1,9 +1,11 @@
-<%  String name = (String) session.getAttribute("username");
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%
     String messageadd = (String) request.getAttribute("messageadd");
     String messageremove = (String) request.getAttribute("messageremove");
     String messagelocation = (String) request.getAttribute("messagelocation");
-    String pp = (String) request.getAttribute("pp");
-%>
+    String username = (String) session.getAttribute("username");
+    %>
 <html>
 <head>
     <meta charset = "UTF-8">
@@ -43,6 +45,8 @@
   </div>
 </div>
 
+<h5>Username : <%= username  %></h5>
+
 <h3> Add Friend </h3>
 <form action="<%=request.getContextPath()%>/profile" method="post">
     <input type='text' placeholder='Username' name = 'username' class='input-line full-width'>
@@ -76,7 +80,10 @@
     <% if (messagelocation != null){ %>
     <h5><%= messagelocation %> </h5>
     <% } %>
+
 </form>
+
+<a href="friendList.jsp"/>Display Friendlist</a>
 
 <br> <br>
 <a href="pcrPos.jsp"/>I am positive</a>
