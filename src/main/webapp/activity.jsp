@@ -1,17 +1,13 @@
 <%@ page import="com.covid19.DatabaseSetup" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%  DatabaseSetup dbSetup = new DatabaseSetup();       %>
 <html>
 <head>
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Notifications </title>
+    <title>Declare Location</title>
     <link rel="stylesheet" href="styleindex.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script>src="https://code.jquery.com/jquery-3.2.1.slim.min.js"</script>
-    <script>src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"</script>
-
 </head>
 <body>
 <div class="header">
@@ -30,6 +26,9 @@
                         <a class="nav-link" href="profile.jsp">Profile</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="notifications.jsp">Notifications</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="requests.jsp">Requests</a>
                     </li>
                     <li class="nav-item">
@@ -41,29 +40,39 @@
     </div>
 </div>
 
-<div class="container">
+<form action="<%=request.getContextPath()%>/activity" method="post">
+    <div class="form-group">
+        Activity
+        <input type="text" placeholder='Location name' name = 'activity' class="form-control">
+        Start time
+        <input type="datetime-local" name="starttime" class="form-control" >
+        End time
+        <input type="datetime-local" name="endtime" class="form-control" >
 
-<%
-    String current  = (String) session.getAttribute("username");
-    DatabaseSetup dbSetup = new DatabaseSetup();
-    try {
-        List<String> infected = new ArrayList<>(dbSetup.notifyUser(current));
-        if(!infected.isEmpty()){
-            for (String friend : infected){ %>
+        Choose location
+        <select name="location">
+            <% for (String location : dbSetup.getLocations()) {%>
+            <option value="<%=location%>"><%=location%></option>
+            <%}%>
+            <option value="Other">Other</option>
+        </select>
+        <br><br>
 
- <h5>Your friend <%=friend%> has declared himself infected </h5>
+        If your Activity is not in the List, Create a new one! <br><br>
 
-<%      }
-} else { %>
-<h3> You don't have any Notification </h3>
-<%}
+        Location
+        <input type="text" name="denomination" placeholder='Denomination' class="form-control" >
+        Address
+        <input type="text" name="address" placeholder='Address' class="form-control" >
+        Coordinates
+        <input type="text" name="coordx" placeholder='x coordinates' class="form-control" >
+        <br>
+        <input type="text" name="coordy" placeholder='Y coordinates' class="form-control" >
 
-}
-catch (ClassNotFoundException e) {
-    e.printStackTrace();
-} %>
+        <br>
+        <input type="submit" class="btn btn-primary" value="Add" />
 
-
-</div>
+    </div>
+</form>
 </body>
 </html>

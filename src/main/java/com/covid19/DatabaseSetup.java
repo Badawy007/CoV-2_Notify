@@ -208,23 +208,65 @@ public class DatabaseSetup {
         return type;
     }
 
-    public int visitLocation(String username, String location) throws ClassNotFoundException {
+    public int doActivity(String activityName, String startTime ,String endTime,String locationName,String current) throws ClassNotFoundException{
         int result = 0;
 
-        String VISIT_LOCATION_SQL = "INSERT INTO visited_location (Visitor_Name,Location_Name) " +
-                                    "VALUES (?,?)";
+        String DO_ACTIVITY_SQL = "INSERT INTO practiced_activity (ActivityName,ActivityStartTime,ActivityEndTime,LocationName,ActivityActor) " +
+                                  "VALUES (?,?,?,?,?)";
 
         Class.forName("com.mysql.jdbc.Driver");
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
-             PreparedStatement Query = connection.prepareStatement(VISIT_LOCATION_SQL)) {
-            Query.setString(1, username);
-            Query.setString(2, location);
+             PreparedStatement Query = connection.prepareStatement(DO_ACTIVITY_SQL)) {
+            Query.setString(1, activityName);
+            Query.setString(2, startTime);
+            Query.setString(3, endTime);
+            Query.setString(4, locationName);
+            Query.setString(5, current);
             result = Query.executeUpdate();
 
         } catch (SQLException e){
             printSQLException(e);
         }
         return result;
+    }
+
+    public int visitLocation(String locatioName, String locationAddress, String x, String y) throws ClassNotFoundException {
+        int result = 0;
+
+        String VISIT_LOCATION_SQL = "INSERT INTO location (LocationName,LocationAddress, LocationX, LocationY) " +
+                                    "VALUES (?,?,?,?)";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(VISIT_LOCATION_SQL)) {
+            Query.setString(1, locatioName);
+            Query.setString(2, locationAddress);
+            Query.setString(3, x);
+            Query.setString(4, y);
+            result = Query.executeUpdate();
+
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return result;
+    }
+
+    public List<String> getLocations() throws ClassNotFoundException{
+        List<String> locations = new ArrayList<>();
+
+        String GET_LOCATIONS_SQL = "SELECT LocationName " +
+                                   "FROM location " ;
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(GET_LOCATIONS_SQL)) {
+            ResultSet resultSet = Query.executeQuery();
+            while(resultSet.next()){
+                locations.add(resultSet.getString("LocationName"));
+            }
+        } catch (SQLException e){
+            printSQLException(e); }
+        return locations;
     }
 
     public int setPositive(String username) throws ClassNotFoundException {

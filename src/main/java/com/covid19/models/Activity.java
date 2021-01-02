@@ -1,9 +1,12 @@
-package com.covid19;
+package com.covid19.models;
+
+import com.covid19.models.Location;
 
 import java.util.Date;
 
 public class Activity {
 
+    private String name;
     private Date date;
     private String startHour;
     private String endHour;
@@ -14,6 +17,14 @@ public class Activity {
         startHour = "00:00";
         endHour = "23:59";
         location = new Location();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getDate() {

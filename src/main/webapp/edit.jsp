@@ -1,17 +1,11 @@
-<%@ page import="com.covid19.DatabaseSetup" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Notifications </title>
+    <title>Edit Profile</title>
     <link rel="stylesheet" href="styleindex.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script>src="https://code.jquery.com/jquery-3.2.1.slim.min.js"</script>
-    <script>src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"</script>
-
 </head>
 <body>
 <div class="header">
@@ -30,6 +24,9 @@
                         <a class="nav-link" href="profile.jsp">Profile</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="notifications.jsp">Notifications</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="requests.jsp">Requests</a>
                     </li>
                     <li class="nav-item">
@@ -39,31 +36,6 @@
             </div>
         </nav>
     </div>
-</div>
-
-<div class="container">
-
-<%
-    String current  = (String) session.getAttribute("username");
-    DatabaseSetup dbSetup = new DatabaseSetup();
-    try {
-        List<String> infected = new ArrayList<>(dbSetup.notifyUser(current));
-        if(!infected.isEmpty()){
-            for (String friend : infected){ %>
-
- <h5>Your friend <%=friend%> has declared himself infected </h5>
-
-<%      }
-} else { %>
-<h3> You don't have any Notification </h3>
-<%}
-
-}
-catch (ClassNotFoundException e) {
-    e.printStackTrace();
-} %>
-
-
 </div>
 </body>
 </html>

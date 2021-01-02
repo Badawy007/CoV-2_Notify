@@ -33,7 +33,7 @@
             <a class="nav-link" href="index.jsp">Home</a>
           </li>
             <li class="nav-item">
-                <a class="nav-link" href="notifications.jsp">Notification</a>
+                <a class="nav-link" href="notifications.jsp">Notifications</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="requests.jsp">Requests</a>
@@ -49,6 +49,8 @@
 
 
 <div class="container">
+
+<% if (username != null) {%>
 
 <h5>Username : <%= username  %></h5>
 
@@ -72,26 +74,15 @@
     <h5><%= messageremove %> </h5>
     <% } %>
 
-    <%-- Declare location --%>
 
-    <h3> Declare location </h3>
-    <select id="loc" name="location">
-        <option value="location1">location1</option>
-        <option value="location2">location2</option>
-        <option value="location3">location3</option>
-        <option value="location4">location4</option>
-        <option value="location4">Other</option>
-    </select>
-    <input type="datetime-local" name = "date">
-    <input type="submit" class="btn btn-primary" value = "Add location">
-
-    <% if (messagelocation != null){ %>
-    <h5><%= messagelocation %> </h5>
-    <% } %>
     </div>
 </form>
 
-<a href="friendList.jsp"/>Display Friendlist</a>
+<a class="btn btn-warning" href="activity.jsp"/>Declare Activity</a>
+
+<a class="btn btn-warning" href="friendList.jsp"/>Display Friendlist</a>
+
+<a class="btn btn-warning" href="edit.jsp"/>Edit Profile</a>
 
 <br> <br>
 
@@ -106,7 +97,7 @@
             <a class="btn btn-success" href="pcrNeg.jsp"/>I am negative</a>
 
 <% } %>
-
+    <%} else { response.sendRedirect("login.jsp");}%>
 </div>
 
 </body>

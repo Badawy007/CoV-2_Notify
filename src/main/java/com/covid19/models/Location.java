@@ -1,14 +1,13 @@
-package com.covid19;
+package com.covid19.models;
 
 public class Location {
 
-
     private String denomination;
     private String address;
-    private double[][] coord ;
+    private String coordX ;
+    private String coordY;
 
     public Location(){
-        coord = new double[1][2];
     }
 
     public String getDenomination() {
@@ -27,16 +26,19 @@ public class Location {
         this.address = address;
     }
 
-    public double[][] getCoord() {
-        return coord;
+    public String getCoordX() {
+        return coordX;
     }
 
-    public void setCoord(double[][] coord) {
-        this.coord = coord;
+    public void setCoordX(String coordX) {
+        this.coordX = coordX;
     }
 
-    public void setCoord(double x, double y) {
-        this.coord[0][0] = x;
-        this.coord[0][1] = y;
+    public String getCoordY() {
+        return coordY;
+    }
+
+    public void setCoordY(String coordY) {
+        this.coordY = coordY;
     }
 }

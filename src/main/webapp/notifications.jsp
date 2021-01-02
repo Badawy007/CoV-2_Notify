@@ -57,6 +57,7 @@
 } else { %>
 <h3> You don't have any Notification </h3>
 <%}
+
 }
 catch (ClassNotFoundException e) {
     e.printStackTrace();

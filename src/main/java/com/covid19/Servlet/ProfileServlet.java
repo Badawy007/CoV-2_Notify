@@ -69,18 +69,6 @@ public class ProfileServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-
-        if (location != "" && friend == "" && removeFriend == ""){
-            try {
-                if(dbSetup.visitLocation(current,location) > 0) {
-                    request.setAttribute("messagelocation","Location Added");
-                } else{
-                    request.setAttribute("messagelocation","Location Already added");
-                }
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
         request.getRequestDispatcher("profile.jsp").forward(request,response);
     }
 
