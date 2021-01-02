@@ -60,6 +60,7 @@ public class ProfileServlet extends HttpServlet {
         if (removeFriend != "" && friend == ""){
             try {
                 if(dbSetup.removeFriend(current,removeFriend)){
+                    dbSetup.removeFriend(removeFriend,current);
                     request.setAttribute("messageremove","*User Unfriended");
                 } else {
                     request.setAttribute("messageremove","*User Not found");
@@ -80,7 +81,6 @@ public class ProfileServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-
         request.getRequestDispatcher("profile.jsp").forward(request,response);
     }
 

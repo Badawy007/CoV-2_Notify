@@ -267,6 +267,28 @@ public class DatabaseSetup {
         return result;
     }
 
+    public int getState(String username) throws ClassNotFoundException {
+        int state = 0;
+        String GET_STATE_SQL =  "SELECT PCR "+
+                                "FROM user "+
+                                "WHERE  username = ? ";
+
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(GET_STATE_SQL)) {
+            Query.setString(1, username);
+            ResultSet resultSet = Query.executeQuery();
+            resultSet.next();
+            if (resultSet.getInt("PCR") == 1){
+                state = 1;
+            }
+
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return state;
+    }
+
     public List<String> getFriends(String current) throws ClassNotFoundException{
         List<String> friends = new ArrayList<>();
 

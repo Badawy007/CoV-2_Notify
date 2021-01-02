@@ -41,6 +41,8 @@
     </div>
 </div>
 
+<div class="container">
+
 <%
     String current  = (String) session.getAttribute("username");
     DatabaseSetup dbSetup = new DatabaseSetup();
@@ -59,5 +61,8 @@
 catch (ClassNotFoundException e) {
     e.printStackTrace();
 } %>
+
+
+</div>
 </body>
 </html>
