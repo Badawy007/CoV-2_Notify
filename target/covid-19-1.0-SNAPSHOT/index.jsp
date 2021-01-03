@@ -75,7 +75,9 @@
 
 
 <div class="container">
-
+<h1 align="center"> WELCOME </h1>
+    <h2 align="center"> Cov-2 Notify is here for you</h2>
+    <h3 align="center"> Unity is strength </h3>
 <h4>Symptoms</h4>
 <p>
     <b> Most common symptoms:</b> <br>
