@@ -578,7 +578,6 @@ public class DatabaseSetup {
         } catch (SQLException e){
             printSQLException(e); }
 
-
         return infected;
     }
 
