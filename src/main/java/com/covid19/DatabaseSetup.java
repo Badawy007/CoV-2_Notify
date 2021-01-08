@@ -513,4 +513,24 @@ public class DatabaseSetup {
             }
         }
     }
+
+    /**
+     * permet d'avoir la liste des personnes ayant ete au meme endrtoit d'une personne infectee sur une periode de 10 jours
+     * @param lieu
+     * @return
+     */
+    private List<String> getListePersonLocation(String lieu) throws ClassNotFoundException {
+        List<String> liste=new ArrayList<>();
+        String LOCATION_PARTAGEE_USER_SQL=" SELECT Visitor_Name "+
+                                           " FROM visited_location "+
+                                            " WHERE Location_Name= ?";
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
+             PreparedStatement Query = connection.prepareStatement(LOCATION_PARTAGEE_USER_SQL)) {
+
+        }
+        catch (SQLException e){
+        printSQLException(e); }
+        return liste;
+    }
 }

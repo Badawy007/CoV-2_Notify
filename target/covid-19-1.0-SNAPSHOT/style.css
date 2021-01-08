@@ -278,3 +278,9 @@ nav .navbar-toggler{
   margin-left: 100px;
   color:red;
 }
+body{
+  background-image: url("/ressources/virusfont.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
