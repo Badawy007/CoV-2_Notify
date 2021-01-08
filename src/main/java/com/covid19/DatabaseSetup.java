@@ -10,6 +10,12 @@ import java.util.List;
 
 
 public class DatabaseSetup {
+    /**
+     * enregistre un utilisateur
+     * @param user
+     * @return
+     * @throws ClassNotFoundException
+     */
 
     public int registerUser(User user) throws ClassNotFoundException {
 
@@ -64,6 +70,13 @@ public class DatabaseSetup {
         return status;
     }
 
+    /**
+     * ajouter un ami
+     * @param username
+     * @param friend
+     * @return
+     * @throws ClassNotFoundException
+     */
     public boolean addFriend(String username, String friend) throws ClassNotFoundException {
 
         boolean temp = false;
@@ -91,7 +104,13 @@ public class DatabaseSetup {
     }
 
 
-
+    /**
+     * Supprimer un ami
+     * @param username
+     * @param friend
+     * @return
+     * @throws ClassNotFoundException
+     */
     public boolean removeFriend(String username, String friend) throws ClassNotFoundException {
 
         boolean temp = false;
@@ -251,6 +270,11 @@ public class DatabaseSetup {
         return result;
     }
 
+    /**
+     *
+     * @return la liste des endroits enregistrés
+     * @throws ClassNotFoundException
+     */
     public List<String> getLocations() throws ClassNotFoundException{
         List<String> locations = new ArrayList<>();
 
@@ -269,6 +293,12 @@ public class DatabaseSetup {
         return locations;
     }
 
+    /**
+     * la fonction qui permet de se declarer positif
+     * @param username
+     * @return
+     * @throws ClassNotFoundException
+     */
     public int setPositive(String username) throws ClassNotFoundException {
         int result = 0;
 
@@ -289,6 +319,12 @@ public class DatabaseSetup {
         return result;
     }
 
+    /**
+     *
+     * @param username
+     * @return le nom
+     * @throws ClassNotFoundException
+     */
     public String getName(String username) throws ClassNotFoundException {
         String Name = "";
 
@@ -310,6 +346,12 @@ public class DatabaseSetup {
         return Name;
     }
 
+    /**
+     *
+     * @param username
+     * @return le jour de naissance
+     * @throws ClassNotFoundException
+     */
     public String getBirthdate(String username) throws ClassNotFoundException {
         String Name = "";
 
@@ -331,6 +373,13 @@ public class DatabaseSetup {
         return Name;
     }
 
+    /**
+     * fonction qui permet de changer le nom
+     * @param username
+     * @param name
+     * @return
+     * @throws ClassNotFoundException
+     */
     public int changeName(String username, String name) throws ClassNotFoundException {
         int result = 0;
 
@@ -353,7 +402,12 @@ public class DatabaseSetup {
 
     }
 
-
+    /**
+     * fonction qui permet de se declarer negatif
+     * @param username
+     * @return
+     * @throws ClassNotFoundException
+     */
     public int setNegative(String username) throws ClassNotFoundException {
         int result = 0;
 
@@ -396,6 +450,12 @@ public class DatabaseSetup {
         return state;
     }
 
+    /**
+     *
+     * @param current
+     * @return la liste d'amis d'un utilisateur
+     * @throws ClassNotFoundException
+     */
     public List<String> getFriends(String current) throws ClassNotFoundException{
         List<String> friends = new ArrayList<>();
 
@@ -419,6 +479,12 @@ public class DatabaseSetup {
         return friends;
     }
 
+    /**
+     *
+     * @param current
+     * @return la liste des invitations d'amitiés
+     * @throws ClassNotFoundException
+     */
     public List<String> getFriendRequests(String current) throws ClassNotFoundException{
         List<String> friendRequests = new ArrayList<>();
 
@@ -440,6 +506,12 @@ public class DatabaseSetup {
         return friendRequests;
     }
 
+    /**
+     * fonction qui permet d'accepter une invitation d'amitié
+     * @param current
+     * @param friend
+     * @throws ClassNotFoundException
+     */
     public void acceptFriend(String current, String friend) throws ClassNotFoundException {
 
         String ACCEPT_FRIEND_SQL =  "UPDATE user_relationship " +
@@ -458,6 +530,12 @@ public class DatabaseSetup {
             printSQLException(e); }
     }
 
+    /**
+     * fonction qui permet de refuser une invitation d'amitié
+     * @param current
+     * @param friend
+     * @throws ClassNotFoundException
+     */
     public void refuseFriend(String current, String friend) throws ClassNotFoundException {
 
         String REFUSE_FRIEND_SQL =  "DELETE FROM user_relationship " +
@@ -474,6 +552,12 @@ public class DatabaseSetup {
             printSQLException(e); }
     }
 
+    /**
+     * fonction qui permet d'envoyer les notifactions aux utilisateurs
+     * @param current
+     * @return
+     * @throws ClassNotFoundException
+     */
     public List<String> notifyUser(String current) throws ClassNotFoundException {
         List<String> infected = new ArrayList<>();
 
@@ -527,6 +611,12 @@ public class DatabaseSetup {
         Class.forName("com.mysql.jdbc.Driver");
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/covdb?useSSL=false", "root", "root");
              PreparedStatement Query = connection.prepareStatement(LOCATION_PARTAGEE_USER_SQL)) {
+            Query.setString(1, lieu);
+            ResultSet resultSet = Query.executeQuery();
+            while(resultSet.next()){
+                System.out.println(resultSet.getString(1));
+                liste.add(resultSet.getString(1));
+            }
 
         }
         catch (SQLException e){
